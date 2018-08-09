@@ -15,6 +15,8 @@ When the project has been run folder contains the following data:
 | `Building consents by region (Quarterly).csv` | Stats NZ | Building consents | `./grooming/09-building-consents.R` |
 | `food-price-index-DATE-index-numbers-csv-tables.csv` | Stats NZ | Food price index | `./grooming/10-food-price-index.R` |
 | `ITM330702_20180809_062851_36.csv`| Stats NZ | Total visitor arrivals | Manual from Infoshare |
+| `TPT052602_20180809_093759_53.csv` | Stats NZ | Vehicles registered (cars and commercial) | Manual from Infoshare|
+| `EXP476601_20180809_095811_58.csv` | Stats NZ | Merchandise goods exports | Manual from Infoshare |
 | `ind_data.rda` | Built in this project | Consolidated dataset, in three tibbles | `./integrate.R` |
 
 Only manually downloaded datasets are included in the Git repository; other datasets (eg electronic card transactions) are dynamically downloaded by the relevant scripts in `./grooming/`
