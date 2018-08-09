@@ -11,6 +11,7 @@ ind_data <- gdp_q %>%
   full_join(com_vcl_q, by = c("yr", "qtr")) %>%
   full_join(goods_q, by = c("yr", "qtr")) %>%
   full_join(fx_q, by = c("yr", "qtr")) %>%
+  full_join(lst_q, by = c("yr", "qtr")) %>%
   arrange(yr, qtr) %>%
   mutate(yr_num = yr + qtr / 4 - 0.125)
 
@@ -27,7 +28,7 @@ ind_data_tidy <- ind_data %>%
   select(-yr, -qtr) %>%
   mutate(variable = fct_relevel(variable, c("gdp_growth", "gdp_growth_lag", "ect_growth", "bc_sa",
                                             "cars_growth", "com_vcl_growth", "iva_growth", "bci_growth", 
-                                            "twi_growth", "goods_growth")))
+                                            "twi_growth", "lst_growth", "goods_growth")))
 
 
 ind_data_wide <- ind_data_tidy %>%
@@ -48,7 +49,8 @@ ind_data_wide_names <- ind_data_wide %>%
          `Cars and stationwagons registered` = cars_growth,
          `Commercial vehicles registered` = com_vcl_growth,
          `Exports of goods` = goods_growth,
-         `Trade-weighted currency index` = twi_growth)
+         `Trade-weighted currency index` = twi_growth,
+         `Number livestock slaughtered` = lst_growth)
   
 names(ind_data_wide_names) <- str_wrap(names(ind_data_wide_names), 15)
 

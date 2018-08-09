@@ -19,7 +19,7 @@ summary(ind_data_wide2)
 # is the actual observed value just zero (probably before 1987, but in 1987 there were at least some eg credit cards?)
 
 
-# naive approach *will* fit a model, but the NA is down to the lowest common denominator, when data available on all variables
+# naive approach *will* fit a plausible model, but the NA is down to the lowest common denominator, when data available on all variables
 mod <- lm(gdp_growth ~ ., data = ind_data_wide2)
 summary(mod)
 # suggests building consents issued and maybe ECT.  Makes it more important to do something about the missing ECT values.
@@ -30,14 +30,14 @@ ind_mi <- mice(ind_data_wide2)
 
 mod_mi <- with(ind_mi, lm(gdp_growth ~ yr_num + gdp_growth_lag + bc_sa + bci_growth +
                             ect_growth + fpi_growth + iva_growth + goods_growth + 
-                            cars_growth + com_vcl_growth + twi_growth))
+                            cars_growth + com_vcl_growth + twi_growth + lst_growth))
 summary(pool(mod_mi))
 
 cbind(summary(pool(mod_mi)), round(summary(pool(mod_mi))$p.value, 3))
 
 dim(ind_data_wide)
 
-# I have 232 observations - many of them missing and a minimum of 11 variables.  Not enough degrees of freedom for much 
+# I have 233 observations - many of them missing and a minimum of 13 variables.  Not enough degrees of freedom for much 
 # mucking around with non-linearity here (only about 20 observations per variable)
 
 
@@ -75,7 +75,7 @@ p4 <-  cv_res_grp %>%
          ordered_alpha = fct_reorder(ordered_alpha, mcve, .fun = min)) %>%
   ggplot(aes(x = lambda, y = sqrt(mcve), colour = ordered_alpha)) +
   geom_line(size = 2) +
-  scale_x_log10() +
+  scale_x_log10(label = comma) +
   scale_colour_viridis("alpha", guide = guide_legend(reverse = TRUE), discrete = TRUE) +
   ggtitle("Cross-validation to select hyper parameters in elastic net regression") +
   scale_y_continuous("Square root of mean cross validation error", label = comma) +
