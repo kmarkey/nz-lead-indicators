@@ -14,7 +14,6 @@ if(!exists("bci_all")){
   bci_all <- read.csv("data/Building consents by region (Quarterly).csv")
 }
 
-View(bci_all)
 
 bci_q <- bci_all %>%
   filter(  Series_title_1 == "New Zealand" & 
