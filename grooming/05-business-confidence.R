@@ -20,7 +20,8 @@ bc_ts <- ts(bc_nz$Value, start = c(1961, 6), frequency = 12)
 bc_nz$bc_sa <- final(seas(bc_ts))
 
 
-# Quarterly roll-up
+# Quarterly roll-up.  Business confidence doesn't need to be changed into a growth rate (first differenced) as it
+# is already stationary, by the nature of it being a bounded statistic calculated from a survey question
 bc_q <- bc_nz %>%
   group_by(yr, qtr) %>%
   summarise(bc_sa = mean(bc_sa)) %>%

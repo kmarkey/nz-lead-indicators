@@ -41,3 +41,4 @@ rsconnect/
 # downloadable datasets:
 data/ect-latest.csv
 data/Building consents by region (Quarterly).csv
+data/food*-index-numbers-csv-tables.csv
