@@ -1,12 +1,5 @@
 # This analysis program ignores the time series nature of the data other than by including lagged growth as a variable.
 
-library(mice)
-library(forecast)
-library(tidyverse)
-library(glmnet)
-library(scales)
-library(viridis)
-library(boot)
 
 load("data/ind_data.rda")
 
@@ -26,7 +19,7 @@ summary(mod)
 # And there's big collinearity problems here.  We need to a) address the missing data and b) the collinearity.
 
 #----------mice--------------------
-ind_mi <- mice(ind_data_wide2)
+ind_mi <- mice(ind_data_wide2, print = FALSE)
 
 mod_mi <- with(ind_mi, lm(gdp_growth ~ yr_num + gdp_growth_lag + bc_sa + bci_growth +
                             ect_growth + fpi_growth + iva_growth + goods_growth + 
@@ -49,6 +42,7 @@ dim(ind_data_wide)
 # use in combination with bootstrap.
 cv_results <- data_frame(lambda = numeric(), alpha = numeric(), mcve = numeric(), imputation = numeric())
 
+set.seed(765)
 for(imp in 1:5){
   the_data <- mice::complete(ind_mi, imp)
   
@@ -151,8 +145,8 @@ of change in one standard deviation in the explanatory variable",
        caption = "95% confidence intervals based on bootstrapped elastic net regularized regression, with
 electronic card transactions imputed differently for each bootstrap resample.
 Analysis by http://freerangestats.info") +
-  ggtitle("Previous quarter's economic growth, food prices and car registrations
-are useful as leading indicators of this quarter's New Zealand economic growth",
+  ggtitle("Previous quarter's economic growth (+ve) and food prices (-ve)
+most useful as leading indicators of this quarter's New Zealand economic growth",
           str_wrap("Variables considered are official statistics available from Stats NZ every month, within a month; plus the OECD business confidence measure (which is based on NZIER's Quarterly Survey of Business Opinion); and the trade weighted index for currency published by RBNZ.", 80))
 
 
