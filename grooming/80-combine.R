@@ -24,7 +24,9 @@ ind_data_tidy <- ind_data %>%
 
 ind_data_wide <- ind_data_tidy %>%
   select(-lag, -type) %>%
-  spread(variable, value) %>%
+  spread(variable, value) 
+
+ind_data_wide_names <- ind_data_wide %>%
   rename(`GDP growth one quarter ahead` = gdp_growth,
          `Business confidence` = bc_sa_lag,
          `Building consents` = bci_growth_lag,
@@ -34,7 +36,10 @@ ind_data_wide <- ind_data_tidy %>%
          `Visitor arrivals` = iva_growth_lag,
          `Period` = yr_num)
   
-names(ind_data_wide) <- str_wrap(names(ind_data_wide), 12)
+names(ind_data_wide_names) <- str_wrap(names(ind_data_wide_names), 12)
+
+
+save(ind_data_wide, ind_data_tidy, ind_data_wide_names, file = "data/ind_data.rda")
 
 #----------graphics to show data are all here----------------
 
@@ -52,7 +57,7 @@ path_fn <- function(data, mapping, ...){
   return(p)
 }
 
-p2 <- ggpairs(ind_data_wide, lower = list(continuous = path_fn))
+p2 <- ggpairs(ind_data_wide_names, lower = list(continuous = path_fn))
 
 svg("output/pairs.svg", 10, 10)
 print(p2)
