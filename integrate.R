@@ -2,6 +2,7 @@ library(tidyverse)
 library(lubridate)
 library(scales)
 library(seasonal)
+library(GGally)
 
 
 # Grooming

@@ -7,13 +7,14 @@ iva <- read.csv("data/ITM330702_20180809_062851_36.csv", skip = 1)
 names(iva) <- c("yr_qtr", "iva")
 
 iva_q <- iva %>%
-  mutate(qtr = substring(yr_qtr, 6, 6),
-         yr = substring(yr_qtr, 1, 4)) %>%
-  filter(yr == as.numeric(yr)) %>%
+  mutate(qtr = as.numeric(substring(yr_qtr, 6, 6)),
+         yr = as.numeric(substring(yr_qtr, 1, 4))) %>%
+  filter(!is.na(yr)) %>%
   arrange(yr, qtr) %>%
   # we don't want all the way back to 1921 because it makes it hard for seasonal adjustment, and really
   # the world was very very different then (and no GDP figures anyway)
-  filter(yr > 1960)
+  filter(yr > 1960) %>%
+  select(-yr_qtr)
 
 head(iva_q)
 

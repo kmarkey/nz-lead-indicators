@@ -26,4 +26,4 @@ bc_q <- bc_nz %>%
   group_by(yr, qtr) %>%
   summarise(bc_sa = mean(bc_sa)) %>%
   ungroup() %>%
-  mutate(bc_sa_lag1 = lag(bc_sa))
+  mutate(bc_sa_lag = lag(bc_sa))
