@@ -23,6 +23,6 @@ bc_nz$bc_sa <- final(seas(bc_ts))
 # Quarterly roll-up
 bc_q <- bc_nz %>%
   group_by(yr, qtr) %>%
-  summarise(bc = mean(bc_sa)) %>%
+  summarise(bc_sa = mean(bc_sa)) %>%
   ungroup() %>%
-  mutate(bc_lag1 = lag(bc))
+  mutate(bc_sa_lag1 = lag(bc_sa))
