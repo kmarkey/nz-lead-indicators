@@ -37,4 +37,7 @@ rsconnect/
 .Rproj.user
 
 *.html
+
+# downloadable datasets:
 data/ect-latest.csv
+data/Building consents by region (Quarterly).csv

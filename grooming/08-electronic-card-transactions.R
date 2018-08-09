@@ -32,7 +32,8 @@ ect_ts <- ts(ect_q$ect, start = c(2002, 4), frequency = 4)
 ect_q <- ect_q %>%
   mutate(ect_sa = final(seas(ect_ts)),
          ect_growth = ect_sa / lag(ect_sa) - 1,
-         ect_growth_lag = lag(ect_growth))
+         ect_growth_lag = lag(ect_growth)) %>%
+  as_tibble()
 
 
 
