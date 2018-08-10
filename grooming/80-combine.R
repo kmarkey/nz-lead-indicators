@@ -1,6 +1,6 @@
 
 
-
+# full set of data, in a pretty wide format:
 ind_data <- gdp_q %>%
   full_join(bc_q, by = c("yr", "qtr")) %>%
   full_join(ect_q, by = c("yr", "qtr")) %>%
@@ -15,9 +15,10 @@ ind_data <- gdp_q %>%
   arrange(yr, qtr) %>%
   mutate(yr_num = yr + qtr / 4 - 0.125)
 
+# tidy format, and just the stationary versions (ie growth etc):
 ind_data_tidy <- ind_data %>%
   # Drop some non-seasonally-adjusted variables that we won't be using:
-  select(-gdp_p_cv, -bci, -ect, -iva) %>%
+  select(-gdp, -bc, -bci, -ect, -iva) %>%
   gather(variable, value, -yr, -qtr, -yr_num) %>%
   filter(!is.na(value)) %>%
   mutate(type = ifelse(grepl("_sa", variable), "Seasonally adjusted", "Original"),
@@ -30,7 +31,7 @@ ind_data_tidy <- ind_data %>%
                                             "cars_growth", "com_vcl_growth", "iva_growth", "bci_growth", 
                                             "twi_growth", "lst_growth", "goods_growth")))
 
-
+# wide again, but with only the variables we need.  Useful for modelling.
 ind_data_wide <- ind_data_tidy %>%
   select(-lagged, -type, -diffed) %>%
   spread(variable, value) %>%
@@ -38,6 +39,7 @@ ind_data_wide <- ind_data_tidy %>%
   select(-yr_num) %>%
   rename(yr_num = yr_num2)
 
+# wide version with meaningful names:
 ind_data_wide_names <- ind_data_wide %>%
   rename(`GDP growth one quarter ago` = gdp_growth_lag,
          `Business confidence` = bc_sa,
@@ -54,32 +56,6 @@ ind_data_wide_names <- ind_data_wide %>%
   
 names(ind_data_wide_names) <- str_wrap(names(ind_data_wide_names), 15)
 
+# Save all four versions:
+save(ind_data, ind_data_wide, ind_data_tidy, ind_data_wide_names, file = "data/ind_data.rda")
 
-save(ind_data_wide, ind_data_tidy, ind_data_wide_names, file = "data/ind_data.rda")
-
-#----------graphics to show data are all here----------------
-
-p1 <- ind_data_tidy %>%
-  filter(variable != "gdp_growth_lag") %>%
-  ggplot(aes(x = yr_num, y = value)) +
-  facet_wrap(~variable, scales = "free_y", ncol = 2) +
-  geom_line()
-
-svg("./output/line-charts.svg", 9, 8)
-print(p1)
-dev.off()
-
-path_fn <- function(data, mapping, ...){
-  p <- ggplot(data = data, mapping = mapping) + 
-    geom_smooth(method = "lm", colour = "orange") +
-    geom_path(colour = "grey", ...) +
-    geom_point(colour = "steelblue", size = 0.5, ...)
-     
-  return(p)
-}
-
-p2 <- ggpairs(select(ind_data_wide_names, -yr_num), lower = list(continuous = path_fn))
-
-svg("output/pairs.svg", 10, 10)
-print(p2)
-dev.off()

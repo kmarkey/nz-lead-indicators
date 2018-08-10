@@ -24,6 +24,7 @@ ind_mi <- mice(ind_data_wide2, print = FALSE)
 mod_mi <- with(ind_mi, lm(gdp_growth ~ yr_num + gdp_growth_lag + bc_sa + bci_growth +
                             ect_growth + fpi_growth + iva_growth + goods_growth + 
                             cars_growth + com_vcl_growth + twi_growth + lst_growth))
+
 summary(pool(mod_mi))
 
 cbind(summary(pool(mod_mi)), round(summary(pool(mod_mi))$p.value, 3))
@@ -78,7 +79,7 @@ p4 <-  cv_res_grp %>%
 # This suggests a range of values of alpha will work
 # 0 is pure ridge regression (leaves all variables in but shrinks to zero) and 1 is the lasso
 # (selects variables).  In practice I tried with several methods and get very similar results
-svg("./output/hyper-params-glmnet.svg", 8, 6)
+svg("./output/0128-hyper-params-glmnet.svg", 8, 6)
 print(p4)
 dev.off()
 
@@ -150,6 +151,6 @@ most useful as leading indicators of this quarter's New Zealand economic growth"
           str_wrap("Variables considered are official statistics available from Stats NZ every month, within a month; plus the OECD business confidence measure (which is based on NZIER's Quarterly Survey of Business Opinion); and the trade weighted index for currency published by RBNZ.", 80))
 
 
-svg("./output/ridge-boot-results.svg", 8, 7)
+svg("./output/0128-ridge-boot-results.svg", 8, 7)
 print(p3)
 dev.off()

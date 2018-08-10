@@ -1,6 +1,6 @@
 # Total GDP, chain volume, production measure:
 gdp <- read.csv("data/SNE445001_20180801_075329_92.csv", stringsAsFactors = FALSE, skip = 1)
-names(gdp) <- c("yr_qtr", "gdp_p_cv")
+names(gdp) <- c("yr_qtr", "gdp")
 
 gdp_q <- gdp %>%
   mutate(qtr = as.numeric(substring(yr_qtr, 6, 6)),
@@ -10,7 +10,7 @@ gdp_q <- gdp %>%
   select(-yr_qtr)
 
 # Much stronger seasonality in the GDP growth rates than there was in the business confidence:
-gdp_ts <- ts(gdp_q$gdp_p_cv, start = c(1987, 3), frequency = 4)
+gdp_ts <- ts(gdp_q$gdp, start = c(1987, 3), frequency = 4)
 
 # create a seasonally adjusted version of the volume series, which we'll use for growth rates
 gdp_q <- gdp_q %>%

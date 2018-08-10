@@ -18,12 +18,13 @@ library(viridis)
 library(boot)
 library(broom)
 library(stargazer)
-library(knitr) # for kable
+library(knitr)     # for kable
 
 #----------setup----------
 # optional styling, use if you want it to be consistent with the freerangestats.info blog:
-source("r/freerangestats-styling.R")
-
+# source("r/freerangestats-styling.R")
+# Note that if you uncomment the above line, you get lots of warnings for graphics that are
+# created directly in RStudio (as opposed to writing to an SVG or PNG device).
 
 #--------------Grooming------------------
 # Data download (when it can be automated), import, tidying, and grooming in general.

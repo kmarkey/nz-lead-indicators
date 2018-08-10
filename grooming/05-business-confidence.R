@@ -24,6 +24,7 @@ bc_nz$bc_sa <- final(seas(bc_ts))
 # is already stationary, by the nature of it being a bounded statistic calculated from a survey question
 bc_q <- bc_nz %>%
   group_by(yr, qtr) %>%
-  summarise(bc_sa = mean(bc_sa)) %>%
+  summarise(bc_sa = mean(bc_sa),
+            bc = mean(Value)) %>%
   ungroup() %>%
   mutate(bc_sa_lag = lag(bc_sa))

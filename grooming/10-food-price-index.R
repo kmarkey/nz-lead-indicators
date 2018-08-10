@@ -33,7 +33,8 @@ fpi_m <- fpi_m %>%
 
 fpi_q <- fpi_m %>%
   group_by(yr, qtr) %>%
-  summarise(fpi_sa = mean(fpi_sa, na.rm = TRUE)) %>%
+  summarise(fpi_sa = mean(fpi_sa, na.rm = TRUE),
+            fpi = mean(fpi)) %>%
   ungroup() %>%
   mutate(fpi_growth = fpi_sa / lag(fpi_sa) - 1,
          fpi_growth_lag = lag(fpi_growth)) %>%

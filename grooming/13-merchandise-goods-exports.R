@@ -23,7 +23,8 @@ goods_m <- goods_m %>%
 
 goods_q <- goods_m %>%
   group_by(yr, qtr) %>%
-  summarise(goods_sa = mean(goods_sa, na.rm = TRUE)) %>%
+  summarise(goods_sa = sum(goods_sa, na.rm = TRUE),
+            goods = sum(goods)) %>%
   ungroup() %>%
   mutate(goods_growth = goods_sa / lag(goods_sa) - 1,
          goods_growth_lag = lag(goods_growth)) 
