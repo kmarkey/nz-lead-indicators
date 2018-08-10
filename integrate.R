@@ -17,10 +17,17 @@ library(glmnet)
 library(viridis)
 library(boot)
 library(broom)
+library(stargazer)
+library(knitr) # for kable
+
+#----------setup----------
+# optional styling, use if you want it to be consistent with the freerangestats.info blog:
+source("r/freerangestats-styling.R")
 
 
 #--------------Grooming------------------
-# Data download (when can be automated), import, tidying, and grooming in general
+# Data download (when it can be automated), import, tidying, and grooming in general.
+# Caution - one of the files (for building consents issued) includes downloading 28MB the first time each R session:
 files <- list.files("grooming", full.names = TRUE)
 for(f in files){source(f)}
 

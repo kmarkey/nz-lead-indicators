@@ -10,7 +10,7 @@ X <- scale(select(ind_imp, -yr_num, -gdp_growth, -gdp_growth_lag))
 mod <- auto.arima(Y, xreg = X)
 
 
-broom::tidy(confint(mod))
+confint(mod) %>% tidy %>% stargazer(type = "html")
 # these results are similar to what we get with the ridge regression approach, but they lose in interpretability
 # (because of the moving average and seasonal moving average rather than just relying on the lagged value of growth).
 # Noticeably more positive about business confidence as an indicator though.

@@ -18,3 +18,8 @@ these make good candidates for lead indicators.  Other non-official statistics c
 The OECD business confidence data is based on monthly interpolations of the NZIER QBSO, but is more readily available as a time series than either the ANZ and NZIER series, so I will probably use this as a stand-in for business confidence in general.
 
 Proposed method is to use all the candidate leading indicators as explanatory variables in a regression and use the lasso or other methods to identify the most effective subset of variables; or at least to get some general comparisons of them.
+
+## Using this repo
+
+All the data download, grooming and analysis can be performed by simply running `./integrate.R`.
+
