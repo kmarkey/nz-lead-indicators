@@ -17,7 +17,10 @@ When the project has been run folder contains the following data:
 | `ITM330702_20180809_062851_36.csv`| Stats NZ | Total visitor arrivals | Manual from Infoshare |
 | `TPT052602_20180809_093759_53.csv` | Stats NZ | Vehicles registered (cars and commercial) | Manual from Infoshare|
 | `EXP476601_20180809_095811_58.csv` | Stats NZ | Merchandise goods exports | Manual from Infoshare |
+| `hb1-monthly.xlsx` and `hb1-monthly-1973-1998.xlsx` | Reserve Bank of NZ | exchange rates | `./grooming/20-trade-weighted-index.R`|
+| `LSS154702_20180810_120736_86.csv` | Stats NZ | Livestock slaughted | Manual from Infoshare |
 | `ind_data.rda` | Built in this project | Consolidated dataset, in three tibbles | `./integrate.R` |
+
 
 Only manually downloaded datasets are included in the Git repository; other datasets (eg electronic card transactions) are dynamically downloaded by the relevant scripts in `./grooming/`
 
