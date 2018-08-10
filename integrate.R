@@ -36,3 +36,6 @@ for(f in files){source(f)}
 #----------------Analysis-----------------
 source("analysis/linear-models.R") # takes a few minutes because of a bootstrap operation
 source("analysis/timeseries-approach.R")
+
+
+source("R/copy-to-blog.R")

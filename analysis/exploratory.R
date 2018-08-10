@@ -2,7 +2,7 @@
 # Peter Ellis 9 August 2018
 
 
-ind_data %>%
+p0 <- ind_data %>%
   select(yr_num, everything(), -ends_with("growth"), -ends_with("lag"), -yr, -qtr) %>%
   gather(variable, value, -yr_num) %>%
   filter(!is.na(value)) %>%
@@ -10,15 +10,29 @@ ind_data %>%
   mutate(variable = gsub("_sa", "", variable)) %>%
   ggplot(aes(x = yr_num, colour = sa, y = value)) +
   facet_grid(variable ~ sa, scales = "free_y") +
-  geom_line()
+  geom_line() +
+  ggtitle("Potential leading indicators for the New Zealand economy",
+          "Presented in original form; apart from business confidence ('bc'), all series are non-stationary\nso will need to be treated as growth rates for modelling.") +
+  theme(legend.position = "none") +
+  labs(x = "", colour = "",
+       caption = "Source: OECD/NZIER (business confidence), Reserve Bank (trade weighted index), Stats NZ (all others)")
 
-names(ind_data)
-ind_data$bc
+svg("./output/0128-line-charts.svg", 8, 12)
+print(p0)
+dev.off()
+
+
 p1 <- ind_data_tidy %>%
-  filter(variable != "gdp_growth_lag") %>%
+  filter(variable != "gdp_growth") %>%
   ggplot(aes(x = yr_num, y = value)) +
   facet_wrap(~variable, scales = "free_y", ncol = 2) +
-  geom_line()
+  geom_line()+
+  ggtitle("Potential leading indicators for the New Zealand economy",
+          "Presented as stationary series; mostly this means as growth rates of the seasonally adjusted original.") +
+  theme(legend.position = "none") +
+  labs(x = "", colour = "",
+       caption = "Source: OECD/NZIER (business confidence), Reserve Bank (trade weighted index), Stats NZ (all others)")
+
 
 svg("./output/0128-stationary-line-charts.svg", 9, 8)
 print(p1)

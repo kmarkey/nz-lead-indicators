@@ -14,7 +14,10 @@ summary(ind_data_wide2)
 
 # naive approach *will* fit a plausible model, but the NA is down to the lowest common denominator, when data available on all variables
 mod <- lm(gdp_growth ~ ., data = ind_data_wide2)
-summary(mod)
+
+
+stargazer(mod, type ="html")
+
 # suggests building consents issued and maybe ECT.  Makes it more important to do something about the missing ECT values.
 # And there's big collinearity problems here.  We need to a) address the missing data and b) the collinearity.
 
@@ -25,7 +28,7 @@ mod_mi <- with(ind_mi, lm(gdp_growth ~ yr_num + gdp_growth_lag + bc_sa + bci_gro
                             ect_growth + fpi_growth + iva_growth + goods_growth + 
                             cars_growth + com_vcl_growth + twi_growth + lst_growth))
 
-summary(pool(mod_mi))
+summary(pool(mod_mi)) %>% kable(digits = 4)
 
 cbind(summary(pool(mod_mi)), round(summary(pool(mod_mi))$p.value, 3))
 
@@ -102,10 +105,10 @@ elastic <- function(data, i){
   lambda <- cv.glmnet(as.matrix(X), Y, alpha = chosen_alpha)$lambda.min
   
   # fit the model:
-  mod_rr <- glmnet(X, Y, alpha = chosen_alpha, lambda = lambda)
+  mod_glmnet <- glmnet(X, Y, alpha = chosen_alpha, lambda = lambda)
   
   # return the results:
-  as.vector(coef(mod_rr))
+  as.vector(coef(mod_glmnet))
 }
 
 # Now we run the bootstrap, using the function above.
@@ -129,6 +132,8 @@ for(i in 1:length(var_names)){
                                  point = x$t0))
 }
 
+kable(boot_coefs, digits = 4)
+
 p3 <- boot_coefs %>%
   filter(!variable %in% c("yr_num", "Intercept")) %>%
   # next line is in there in case we do still want the time trend in the graphic.  But it's never significant,
@@ -148,9 +153,28 @@ electronic card transactions imputed differently for each bootstrap resample.
 Analysis by http://freerangestats.info") +
   ggtitle("Previous quarter's economic growth (+ve) and food prices (-ve)
 most useful as leading indicators of this quarter's New Zealand economic growth",
-          str_wrap("Variables considered are official statistics available from Stats NZ every month, within a month; plus the OECD business confidence measure (which is based on NZIER's Quarterly Survey of Business Opinion); and the trade weighted index for currency published by RBNZ.", 80))
+          str_wrap("Variables considered are official statistics available from Stats NZ every month, within a month; plus the OECD business confidence measure (which is based on NZIER's Quarterly Survey of Business Opinion); and the trade weighted index for currency published by RBNZ.  Data goes back to 1987.", 80))
 
 
 svg("./output/0128-ridge-boot-results.svg", 8, 7)
 print(p3)
 dev.off()
+
+
+#-----------time series diagnosis of residuals--------
+
+lambda <- cv.glmnet(as.matrix(X), Y, alpha = chosen_alpha)$lambda.min
+mod_glmnet <- glmnet(X, Y, alpha = chosen_alpha, lambda = lambda)
+residuals <- ts(Y - predict(mod_glmnet, newx = X), start = c(1987, 4), frequency = 4)
+
+svg("./output/0128-residuals.ts.svg", 8, 5)
+par(family = "myfont", font.main = 1, bty = "l")
+tsdisplay(residuals, main = "Time series of residuals from regression with imputation and regularization")
+dev.off()
+
+# Fail to reject null hypothesis of no autocorrelation (which means that it is probably ok to have used the
+# above method, pretending it is cross-sectional other than by including the lagged GDP)
+Box.test(residuals, lag = 4, type = "Ljung-Box")
+
+
+
