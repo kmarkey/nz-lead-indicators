@@ -37,5 +37,5 @@ for(f in files){source(f)}
 source("analysis/linear-models.R") # takes a few minutes because of a bootstrap operation
 source("analysis/timeseries-approach.R")
 
-
+# Next script only works in Peter's personal setup
 source("R/copy-to-blog.R")

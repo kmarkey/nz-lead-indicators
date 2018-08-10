@@ -47,7 +47,10 @@ path_fn <- function(data, mapping, ...){
   return(p)
 }
 
-p2 <- ggpairs(select(ind_data_wide_names, -yr_num), lower = list(continuous = path_fn))
+p2 <- ggpairs(select(ind_data_wide_names, -yr_num), lower = list(continuous = path_fn)) +
+  ggtitle("Bivariate comparisons of New Zealand's quarter economic growth and candidate leading indicators of it",
+          "Seasonally adjusted and converted to growth rates (except for business confidence)") +
+  labs(caption = "Source: Stats NZ, OECD, RBNZ; analysis by http://freerangestats.info")
 
 svg("output/0128-pairs.svg", 16, 16)
 print(p2)

@@ -30,9 +30,6 @@ mod_mi <- with(ind_mi, lm(gdp_growth ~ yr_num + gdp_growth_lag + bc_sa + bci_gro
 
 summary(pool(mod_mi)) %>% kable(digits = 4)
 
-cbind(summary(pool(mod_mi)), round(summary(pool(mod_mi))$p.value, 3))
-
-dim(ind_data_wide)
 
 # I have 233 observations - many of them missing and a minimum of 13 variables.  Not enough degrees of freedom for much 
 # mucking around with non-linearity here (only about 20 observations per variable)
@@ -115,14 +112,14 @@ elastic <- function(data, i){
 set.seed(321)
 elastic_bt <- boot(data = ind_data_wide2, statistic = elastic, R = 999)
 
-
+# process results into a tidy data frame:
 boot_coefs <- data_frame(
   variable = character(),
   lower = numeric(),
   upper = numeric(),
   point = numeric()
 )
-var_names <- c("Intercept", names(ind_data_wide_names)[-2])
+var_names <- c("Intercept", names(ind_data_wide_names)[-1])
 for(i in 1:length(var_names)){
   x <- boot.ci(elastic_bt, type = "perc", index = i)
   boot_coefs <- rbind(boot_coefs,
@@ -134,6 +131,7 @@ for(i in 1:length(var_names)){
 
 kable(boot_coefs, digits = 4)
 
+# draw graphic
 p3 <- boot_coefs %>%
   filter(!variable %in% c("yr_num", "Intercept")) %>%
   # next line is in there in case we do still want the time trend in the graphic.  But it's never significant,
@@ -145,7 +143,7 @@ p3 <- boot_coefs %>%
   geom_segment(aes(yend = variable, x = lower, xend = upper), size = 3, colour = "steelblue", alpha = 0.5) +
   geom_point(aes(x = point)) +
   scale_x_continuous(label = percent) +
-  labs(x = "Estimated impact in percentage points on predicted next quarter's GDP growth,
+  labs(x = "Estimated impact in percentage points on coming quarter's GDP growth
 of change in one standard deviation in the explanatory variable",
        y = "",
        caption = "95% confidence intervals based on bootstrapped elastic net regularized regression, with
