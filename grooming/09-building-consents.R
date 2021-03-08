@@ -41,7 +41,7 @@ bci_q <- bci_all %>%
 bci_ts <- ts(bci_q$bci, start = c(1965, 2), frequency = 4)
 
 bci_q <- bci_q %>%
-  mutate(bci_sa = final(seas(bci_ts)),
+  mutate(bci_sa = as.vector(final(seas(bci_ts))),
          bci_growth = bci_sa / lag(bci_sa) - 1,
          bci_growth_lag = lag(bci_growth)) %>%
   as_tibble()

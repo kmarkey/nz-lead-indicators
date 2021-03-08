@@ -18,7 +18,7 @@ goods_m <- goods_all %>%
 goods_ts <- ts(goods_m$goods, start = c(1960, 1), frequency = 12)
 
 goods_m <- goods_m %>%
-  mutate(goods_sa = final(seas(goods_ts)),
+  mutate(goods_sa = as.vector(final(seas(goods_ts))),
          qtr= ceiling(mon / 3) ) 
 
 goods_q <- goods_m %>%

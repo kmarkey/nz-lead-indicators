@@ -17,7 +17,7 @@ lst_q <- lst %>%
 lst_ts <- ts(lst_q$lst_num, start = c(1981, 4), frequency = 4)
 
 lst_q <- lst_q %>%
-  mutate(lst_sa = final(seas(lst_ts)), 
+  mutate(lst_sa = as.vector(final(seas(lst_ts))), 
          lst_growth = lst_sa / lag(lst_sa) - 1,
          lst_growth_lag = lag(lst_growth)) %>%
   rename(lst = lst_num)

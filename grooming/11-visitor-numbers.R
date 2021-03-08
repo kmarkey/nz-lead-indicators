@@ -22,7 +22,7 @@ head(iva_q)
 iva_ts <- ts(iva_q$iva, start = c(1960, 1), frequency = 4)
 
 iva_q <- iva_q %>%
-  mutate(iva_sa = final(seas(iva_ts)), 
+  mutate(iva_sa = as.vector(final(seas(iva_ts))), 
          iva_growth = iva_sa / lag(iva_sa) - 1,
          iva_growth_lag = lag(iva_growth)) %>%
   as_tibble()

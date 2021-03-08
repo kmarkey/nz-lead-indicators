@@ -28,3 +28,4 @@ bc_q <- bc_nz %>%
             bc = mean(Value)) %>%
   ungroup() %>%
   mutate(bc_sa_lag = lag(bc_sa))
+

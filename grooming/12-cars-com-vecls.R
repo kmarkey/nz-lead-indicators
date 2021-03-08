@@ -22,7 +22,7 @@ cars_q <- vec %>%
 cars_ts <- ts(cars_q$cars, start = c(1961, 1), frequency = 4)
 
 cars_q <- cars_q %>%
-  mutate(cars_sa = final(seas(cars_ts)), 
+  mutate(cars_sa = as.vector(final(seas(cars_ts))), 
          cars_growth = cars_sa / lag(cars_sa) - 1,
          cars_growth_lag = lag(cars_growth)) 
 
@@ -35,7 +35,7 @@ com_vcl_q <- vec %>%
 cv_ts <- ts(com_vcl_q$com_vcl, start = c(1974, 1), frequency = 4)
 
 com_vcl_q <- com_vcl_q %>%
-  mutate(com_vcl_sa = final(seas(cv_ts)), 
+  mutate(com_vcl_sa = as.vector(final(seas(cv_ts))), 
          com_vcl_growth = com_vcl_sa / lag(com_vcl_sa) - 1,
          com_vcl_growth_lag = lag(com_vcl_growth)) 
 

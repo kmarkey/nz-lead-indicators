@@ -7,7 +7,8 @@ p0 <- ind_data %>%
   gather(variable, value, -yr_num) %>%
   filter(!is.na(value)) %>%
   mutate(sa = ifelse(grepl("_sa", variable), "Seasonally adjusted", "Original")) %>%
-  mutate(variable = gsub("_sa", "", variable)) %>%
+  mutate(variable = gsub("_sa", "", variable))
+p0 %>%
   ggplot(aes(x = yr_num, colour = sa, y = value)) +
   facet_grid(variable ~ sa, scales = "free_y") +
   geom_line() +
@@ -23,7 +24,8 @@ dev.off()
 
 
 p1 <- ind_data_tidy %>%
-  filter(variable != "gdp_growth") %>%
+  filter(variable != "gdp_growth")
+p1 %>%
   ggplot(aes(x = yr_num, y = value)) +
   facet_wrap(~variable, scales = "free_y", ncol = 2) +
   geom_line()+
@@ -47,7 +49,7 @@ path_fn <- function(data, mapping, ...){
   return(p)
 }
 
-p2 <- ggpairs(select(ind_data_wide_names, -yr_num), lower = list(continuous = path_fn)) +
+ggpairs(select(ind_data_wide_names, -yr_num), lower = list(continuous = path_fn)) +
   ggtitle("Bivariate comparisons of New Zealand's quarter economic growth and candidate leading indicators of it",
           "Seasonally adjusted and converted to growth rates (except for business confidence)") +
   labs(caption = "Source: Stats NZ, OECD, RBNZ; analysis by http://freerangestats.info")

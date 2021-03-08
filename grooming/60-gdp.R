@@ -14,8 +14,9 @@ gdp_ts <- ts(gdp_q$gdp, start = c(1987, 3), frequency = 4)
 
 # create a seasonally adjusted version of the volume series, which we'll use for growth rates
 gdp_q <- gdp_q %>%
-  mutate(gdp_sa = final(seas(gdp_ts)),
+  mutate(gdp_sa = as.vector(final(seas(gdp_ts))),
          gdp_growth = gdp_sa / lag(gdp_sa) - 1,
          gdp_growth_lag = lag(gdp_growth, 1)) %>%
   as_tibble()
+
 

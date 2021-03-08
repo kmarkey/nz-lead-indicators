@@ -28,12 +28,11 @@ ect_q <- ect_all %>%
   select(yr, qtr, ect)
 
 ect_ts <- ts(ect_q$ect, start = c(2002, 4), frequency = 4)
-
+a<-final(seas(ect_ts))
 ect_q <- ect_q %>%
-  mutate(ect_sa = final(seas(ect_ts)),
+  mutate(ect_sa = as.vector(final(seas(ect_ts))),
          ect_growth = ect_sa / lag(ect_sa) - 1,
          ect_growth_lag = lag(ect_growth)) %>%
   as_tibble()
-
 
 

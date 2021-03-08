@@ -30,7 +30,6 @@ mod_mi <- with(ind_mi, lm(gdp_growth ~ yr_num + gdp_growth_lag + bc_sa + bci_gro
 
 summary(pool(mod_mi)) %>% kable(digits = 4)
 
-
 # I have 233 observations - many of them missing and a minimum of 13 variables.  Not enough degrees of freedom for much 
 # mucking around with non-linearity here (only about 20 observations per variable)
 

@@ -39,3 +39,4 @@ power_q <- power %>%
   group_by(yr, qtr) %>%
   summarise(pm_party = pm_party[freq == max(freq)],
             pm_id = pm_id[freq == max(freq)])
+
